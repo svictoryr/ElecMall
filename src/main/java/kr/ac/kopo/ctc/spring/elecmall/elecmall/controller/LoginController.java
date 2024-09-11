@@ -8,7 +8,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController {
     @GetMapping("/")
-    public String main() {
+    public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/main")
+    public String main() {
+        return "main";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "/login/login";
+    }
+
+    @GetMapping("/newAccount")
+    public String newAccount() {
+        return "/login/newAccount";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "/layouts/footer";
     }
 }
