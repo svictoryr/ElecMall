@@ -1,10 +1,7 @@
 package kr.ac.kopo.ctc.spring.elecmall.elecmall.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter @Setter @ToString
@@ -14,10 +11,10 @@ public class User {
     public Long userId; // 고객번호
 
     @Column
-    public String realName; // 유저 본명
+    public String realname; // 유저 본명
 
-    @Column
-    public String userName; // 계정 ID
+    @Column(unique = true)
+    public String username; // 계정 ID
 
     @Column
     public String password; // 비밀번호
@@ -32,7 +29,7 @@ public class User {
     public String userAddress; // 고객 주소
 
     @Column
-    public String userType; // 고객 유형 (NEWCOMMER, EMPLOYEE, ADMIN)
+    public String role; // 고객 유형 (NEWCOMMER, EMPLOYEE, ADMIN)
 
     @Column
     public String smsOnOff; // 알람 수신 여부
