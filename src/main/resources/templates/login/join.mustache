@@ -1,14 +1,120 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>회원가입</title>
-</head>
-<body>
-    <form action="/elecmall/joinProc" method="post" name="joinForm">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Join">
-    </form>
-</body>
-</html>
+{{>layouts/header}}
+<form id="joinForm" action="/elecmall/joinProc" method="post">
+    <div class="mb-3">
+        <label class="form-label">성함</label>
+        <input type="text" class="form-control" name="realname" maxlength="20"
+               placeholder="한글로 입력해주세요"
+               pattern="[가-힣]+" title="한글만 입력할 수 있습니다." required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">아이디</label>
+        <input type="text" class="form-control" name="username"
+               placeholder="영어와 숫자를 조합하여 입력해주세요"
+               pattern="[A-Za-z0-9]+" title="영어와 숫자만 입력할 수 있습니다." required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">비밀번호</label>
+        <input type="password" id="password"
+               placeholder="사용하실 암호를 입력해주세요"
+               class="form-control" name="password" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">비밀번호 확인</label>
+        <input type="password" id="passwordCheck"
+               placeholder="동일한 암호를 입력해주세요"
+               class="form-control" name="passwordCheck" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">전화번호</label>
+        <input type="text" id="telnum" class="form-control" name="userTelnum" maxlength="13"
+               pattern="^01[016789]-\d{4}-\d{4}$"
+               title="전화번호 형식은 010-1234-5678입니다."
+               placeholder="010-1234-5678"
+               required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">주소</label>
+        <input type="text" class="form-control" name="userAddress"
+               pattern="[가-힣0-9\s]+"
+               title="주소는 한글과 숫자만 입력할 수 있습니다."
+               placeholder="예: 서울특별시 123-45"
+               required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">알림 수신 여부</label>
+        <div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="smsOnOff" id="smsOn" value="on">
+                <label class="form-check-label" for="smsOn">
+                    동의
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="smsOnOff" id="smsOff" value="off">
+                <label class="form-check-label" for="smsOff">
+                    비동의
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="error" style="color: red;"></div> <!-- 오류 메시지 표시 영역 -->
+    <input type='hidden' name="_csrf" value="{{_csrf.token}}">
+    <button type="submit" class="btn btn-primary">회원가입</button>
+</form>
+<script>
+    // 비밀번호 확인
+    document.getElementById('joinForm').addEventListener('submit', function(event) {
+        const password = document.getElementById('password').value;
+        const passwordCheck = document.getElementById('passwordCheck').value;
+
+        if (password !== passwordCheck) {
+            document.getElementById('error').textContent = '비밀번호가 다릅니다';
+            event.preventDefault();
+            return;
+        }
+
+        let formData = new FormData(this);
+
+        fetch('/elecmall/joinProc', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest' // AJAX 요청을 나타내는 헤더
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('error').textContent = data.error;
+            } else {
+                window.location.href = '/elecmall/login';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+        event.preventDefault(); // 폼 제출 기본 동작 방지
+    });
+
+    // 전화번호 포맷팅
+    document.getElementById('telnum').addEventListener('input', function(event) {
+        let input = event.target.value;
+        let numericValue = input.replace(/\D/g, '');
+
+        if (numericValue.length > 11) {
+            numericValue = numericValue.slice(0, 11); // Allow up to 11 digits
+        }
+
+        let formattedValue = '';
+
+        if (numericValue.length > 6) {
+            formattedValue = numericValue.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+        } else if (numericValue.length > 3) {
+            formattedValue = numericValue.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+        } else {
+            formattedValue = numericValue;
+        }
+
+        event.target.value = formattedValue;
+    });
+</script>
+{{>layouts/footer}}

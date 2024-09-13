@@ -3,9 +3,11 @@ package kr.ac.kopo.ctc.spring.elecmall.elecmall.controller;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.dto.JoinDTO;
+import kr.ac.kopo.ctc.spring.elecmall.elecmall.dto.UserForm;
+import kr.ac.kopo.ctc.spring.elecmall.elecmall.repository.UserRepository;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,15 +17,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 @Controller
 public class LoginController {
 
     @Autowired
     private JoinService joinService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String mainP(Model model) {
@@ -41,7 +49,7 @@ public class LoginController {
         model.addAttribute("id", id);
         model.addAttribute("role", role);
 
-        return "hello";
+        return "main";
     }
 
     @GetMapping("/admin")
@@ -63,19 +71,51 @@ public class LoginController {
         return "redirect:/";
     }
 
-
     @GetMapping("/join")
     public String joinP() {
         return "/login/join";
     }
 
     @PostMapping("/joinProc")
-    public String joinProcess(JoinDTO joinDto) {
-        System.out.println("username = " + joinDto.getUsername());
-        System.out.println("password = " + joinDto.getPassword());
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> joinProcess(UserForm userForm) {
+        return joinService.joinProcess(userForm);
+    }
 
-        joinService.joinProcess(joinDto);
+    @PostMapping("/check-username")
+    @ResponseBody
+    public UsernameCheckResponse checkUsername(@RequestBody UsernameCheckRequest request) {
+        boolean isAvailable = !userRepository.existsByUsername(request.getUsername());
+        return new UsernameCheckResponse(isAvailable);
+    }
 
-        return "redirect:/login";
+    public static class UsernameCheckRequest {
+        private String username;
+
+        // Getter와 Setter
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+    }
+
+    public static class UsernameCheckResponse {
+        private boolean available;
+
+        public UsernameCheckResponse(boolean available) {
+            this.available = available;
+        }
+
+        // Getter와 Setter
+        public boolean isAvailable() {
+            return available;
+        }
+
+        public void setAvailable(boolean available) {
+            this.available = available;
+        }
     }
 }

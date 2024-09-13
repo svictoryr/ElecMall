@@ -1,37 +1,43 @@
 package kr.ac.kopo.ctc.spring.elecmall.elecmall.service;
 
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.dto.JoinDTO;
+import kr.ac.kopo.ctc.spring.elecmall.elecmall.dto.UserForm;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.User;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
-// 회원가입 관련 서비스
 public class JoinService {
-    
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    
-    // 회원가입 값을 받아서 DB에 넣는 메서드
-    public void joinProcess(JoinDTO joinDTO) {
 
-        // db에 이미 동일한 username을 가진 회원이 존재하는지 검증
-        boolean isUser = userRepository.existsByUsername(joinDTO.getUsername());
-        if (isUser) {
-            return;
+    public ResponseEntity<Map<String, String>> joinProcess(UserForm userForm) {
+        Map<String, String> response = new HashMap<>();
+
+        if (userRepository.existsByUsername(userForm.getUsername())) {
+            response.put("error", "이미 있는 아이디입니다");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        User data = new User();
+        if (!userForm.getPassword().equals(userForm.getPasswordCheck())) {
+            response.put("error", "비밀번호가 다릅니다");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
 
-        data.setUsername(joinDTO.getUsername());
-        data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
-        data.setRole("ROLE_ADMIN");
-
+        User data = userForm.toEntity(bCryptPasswordEncoder);
         userRepository.save(data);
+
+        response.put("success", "회원가입 성공");
+        return ResponseEntity.ok(response);
     }
 }

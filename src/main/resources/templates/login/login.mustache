@@ -1,19 +1,27 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-
-
-login page
-<hr>
-<form action="/elecmall/loginProc" method="post" name="loginForm">
-    <input id = "username" type="text" name="username" placeholder="id">
-    <input id = "password" type="password" name="password" placeholder="password">
-    <input type = 'hidden' name="_csrf" value="{{_csrf.token}}">
-    <input type="submit" value="login">
+{{>layouts/header}}
+<!-- 로그인 폼 -->
+<form class="container mt-4" action="/elecmall/loginProc" method="post">
+    <div class="mb-3">
+        <label class="form-label">아이디를 입력해주세요</label>
+        <input id = "username" type="text" name="username" placeholder="id">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">암호를 입력해주세요</label>
+        <input id = "password" type="password" name="password" placeholder="password">
+    </div>
+    <input type='hidden' name="_csrf" value="{{_csrf.token}}">
+    <button type="submit" class="btn btn-primary">로그인</button>
 </form>
-</body>
-</html>
+
+<!-- 회원가입으로 이동하는 폼 -->
+<div class="container mt-4">
+    계정이 없으시다면?
+    <form action="/elecmall/join" method="get">
+        <button type="submit" class="btn btn-outline-success">회원가입</button>
+    </form>
+</div>
+
+{{#message}}
+    <div class="alert alert-danger mt-3">{{message}}</div>
+{{/message}}
+{{>layouts/footer}}
