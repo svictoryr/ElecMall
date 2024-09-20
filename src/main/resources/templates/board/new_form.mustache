@@ -1,0 +1,32 @@
+{{>layouts/header}}
+<form class="container mt-4" action="/elecmall/board/create" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <input type="text" class="form-control" name="boardTitle" maxlength="20" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">작성 타입</label>
+        <select class="form-select" name="boardType" required>
+            <option value="" disabled selected>타입을 선택하세요</option>
+            <option value="n">공지</option>
+            <option value="q">문의</option>
+            <option value="r">후기</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">작성자</label>
+        <input type="text" class="form-control" name="boardAuthor" value="{{author}}" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <textarea class="form-control" rows="10" name="boardContent" maxlength="120" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">전송</button>
+    <a href="/elecmall/board/list" class="btn btn-secondary">목록으로</a>
+</form>
+{{>layouts/footer}}

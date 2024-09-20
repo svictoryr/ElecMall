@@ -1,0 +1,122 @@
+/* /css/styles.css */
+
+/* 기본 폰트 설정 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+}
+
+/* 네비게이션 바 */
+.navbar {
+    background-color: #004085; /* 네비게이션 바 배경색 */
+}
+.navbar-brand, .nav-link, .navbar-toggler-icon {
+    color: white; /* 네비게이션 텍스트 색상 */
+}
+.navbar-brand {
+    font-weight: bold;
+}
+.navbar-nav .nav-link:hover {
+    color: #d4e3f1; /* 네비게이션 링크 호버 색상 */
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #004085; /* 기본 버튼 배경색 */
+    border-color: #004085; /* 기본 버튼 테두리 색상 */
+}
+.btn-primary:hover {
+    background-color: #003d72; /* 버튼 호버 색상 */
+}
+.btn-outline-success {
+    color: #004085; /* 버튼 외곽선 색상 */
+    border-color: #004085;
+}
+.btn-outline-success:hover {
+    background-color: #004085; /* 버튼 외곽선 호버 색상 */
+    color: white;
+}
+
+/* 테이블 스타일링 */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse; /* 테이블 셀 간격 제거 */
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1; /* 테이블 행 호버 색상 */
+}
+.table-bordered {
+    border: 1px solid #dee2e6; /* 테이블 전체 테두리 */
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6; /* 셀 테두리 */
+}
+.table th {
+    background-color: #f8f9fa; /* 테이블 헤더 배경색 */
+    color: #495057; /* 테이블 헤더 텍스트 색상 */
+    font-weight: bold;
+}
+.table td {
+    background-color: #ffffff; /* 테이블 데이터 셀 배경색 */
+}
+
+/* 폼 스타일 */
+.form-label {
+    color: #004085; /* 폼 레이블 색상 */
+}
+.form-control {
+    border-radius: 4px; /* 입력 필드 테두리 반경 */
+    border: 1px solid #ccc; /* 입력 필드 테두리 색상 */
+}
+.form-select {
+    border-radius: 4px; /* 선택 필드 테두리 반경 */
+    border: 1px solid #ccc; /* 선택 필드 테두리 색상 */
+}
+
+/* 알림 메시지 */
+.alert {
+    border-radius: 0.25rem; /* 알림 박스 테두리 반경 */
+}
+.alert-danger {
+    background-color: #f8d7da; /* 오류 알림 배경색 */
+    color: #721c24; /* 오류 알림 텍스트 색상 */
+}
+
+/* 컨테이너 */
+.container {
+    max-width: 1200px; /* 최대 폭 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 1rem; /* 패딩 */
+}
+
+/* 버튼 색상 */
+.btn-secondary {
+    background-color: #6c757d; /* 버튼 배경색 */
+    border: none; /* 버튼 테두리 제거 */
+    color: white; /* 버튼 텍스트 색상 */
+}
+.btn-secondary:hover {
+    background-color: #5a6268; /* 버튼 호버 색상 */
+}
+.btn-warning {
+    background-color: #ffc107; /* 버튼 배경색 */
+    border: none; /* 버튼 테두리 제거 */
+    color: black; /* 버튼 텍스트 색상 */
+}
+.btn-warning:hover {
+    background-color: #e0a800; /* 버튼 호버 색상 */
+}
+.btn-danger {
+    background-color: #dc3545; /* 버튼 배경색 */
+    border: none; /* 버튼 테두리 제거 */
+    color: white; /* 버튼 텍스트 색상 */
+}
+.btn-danger:hover {
+    background-color: #c82333; /* 버튼 호버 색상 */
+}
