@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/myPage/**").hasAnyRole("USER")
+                        .requestMatchers("/reservation/**").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 );
 
