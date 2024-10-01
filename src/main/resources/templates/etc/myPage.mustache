@@ -1,10 +1,57 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>마이페이지</title>
-</head>
-<body>
-    마이페이지입니다
-</body>
-</html>
+{{>layouts/header}}
+<h1><b>환영합니다 {{user.realname}}님</b></h1>
+
+<div class="container my-4">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+    <h3>게시판 이용 현황</h3>
+    <div class="d-flex justify-content-between align-items-center">
+        <table class="table table-hober table-bordered">
+            <thead>
+            <tr>
+                <th>글 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#myBoardItems}}
+                <tr>
+                    <td>{{boardId}}</td>
+                    <td><a href = /elecmall/board/{{boardId}} class="text-decoration-none"">{{boardTitle}}</td>
+                    <td>{{boardAuthor}}</td>
+                    <td>{{writeDate}}</td>
+                    <td>{{count}}</td>
+                </tr>
+            {{/myBoardItems}}
+            </tbody>
+        </table>
+    </div>
+    <h3>매장 방문 예약 현황</h3>
+    <div>
+        <table class="table table-hober table-bordered">
+            <thead>
+            <tr>
+                <th>예약일</th>
+                <th>예약시간</th>
+                <th>매장명</th>
+                <th>매장 위치</th>
+                <th>세부사항</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#myReservations}}
+                <tr>
+                    <td>{{reserveDay}}</td>
+                    <td>{{reserveTime}}</td>
+                    <td>{{shop.shopName}}</td>
+                    <td>{{shop.shopAddress}}</td>
+                    <td>{{reserveContent}}</td>
+                </tr>
+            {{/myReservations}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{>layouts/footer}}

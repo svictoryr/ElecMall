@@ -62,7 +62,6 @@ public class BoardController {
         return "board/showBoard";
     }
 
-
     // 작성 페이지로
     @GetMapping("/board/new_form")
     public String newBoard(Model model) {

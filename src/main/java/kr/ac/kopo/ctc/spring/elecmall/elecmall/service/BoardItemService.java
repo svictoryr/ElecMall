@@ -49,6 +49,11 @@ public class BoardItemService {
                 .sorted(Comparator.comparingLong(BoardItem::getBoardId).reversed())
                 .collect(Collectors.toList());
     }
+    
+    // 마이페이지로 내가 쓴 글 가져오기
+    public List<BoardItem> getMyBoardItem(Long userId) {
+        return boardItemRepository.findByUser_UserId(userId);
+    }
 
     // 개별 게시글 조회 메서드
     public BoardItem getOneBoardItems(Long boardId) {

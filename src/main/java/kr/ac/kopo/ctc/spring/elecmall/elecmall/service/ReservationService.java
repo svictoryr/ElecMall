@@ -50,4 +50,9 @@ public class ReservationService {
         Reservation reservation = form.toEntity(user, shop);
         reservationRepository.save(reservation);
     }
+
+    // 마이페이지로 내가 예약한 건 가져오기
+    public List<Reservation> getMyReservation(Long userId) {
+        return reservationRepository.findByUser_UserId(userId);
+    }
 }
