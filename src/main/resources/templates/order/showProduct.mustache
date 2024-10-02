@@ -1,10 +1,45 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>상품 구매</title>
-</head>
-<body>
-    상품 개별 조회 및 구매 페이지입니다
-</body>
-</html>
+{{>layouts/header}}
+<h1>상품 구매</h1>
+<div>
+    <h2>{{product.productName}}</h2>
+    <p>가격: {{product.price}} 원</p>
+    <p>상세 설명: {{product.productContent}}</p>
+
+    <!-- 주문 폼 -->
+    <form action="/elecmall/order/purchase" method="post">
+        <input type="hidden" name="productId" value="{{product.productId}}">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
+        <div>
+            <label for="quantity">수량:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="{{product.stock}}" value="1" required>
+        </div>
+
+        <!-- 총 금액 표시 -->
+        <p>총 금액: <span id="totalPrice"> {{product.price}} </span> 원</p>
+
+        <!-- 총 금액을 서버로 전송하기 위한 숨겨진 필드 -->
+        <input type="hidden" name="totalPrice" id="hiddenTotalPrice" value="{{product.price}}">
+
+        <button type="submit">구매하기</button>
+    </form>
+</div>
+
+<a href="/elecmall/order/all">모든 상품 보기</a>
+
+<script>
+    const price = {{product.price}};
+    const quantityInput = document.getElementById('quantity');
+    const totalPriceElement = document.getElementById('totalPrice');
+    const hiddenTotalPrice = document.getElementById('hiddenTotalPrice');
+
+    // 수량 입력에 따라 총 금액을 계산하고 반영
+    quantityInput.addEventListener('input', () => {
+        const quantity = quantityInput.value;
+        const totalPrice = price * quantity;
+        totalPriceElement.textContent = totalPrice; // 총 금액을 표시하는 부분
+        hiddenTotalPrice.value = totalPrice; // 숨겨진 필드에 총 금액 설정
+    });
+</script>
+
+{{>layouts/footer}}

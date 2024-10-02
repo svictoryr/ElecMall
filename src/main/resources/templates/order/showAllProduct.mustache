@@ -1,3 +1,28 @@
 {{>layouts/header}}
-    전체 상품 조회 페이지입니다
+<div class="container my-4">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+    <h1 class="text-center mb-4"><b>전체 상품 목록</b></h1>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>상품 번호</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>세부사항</th>
+            <th>구매</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#products}}
+            <tr>
+                <td>{{productId}}</td>
+                <td>{{productName}}</td>
+                <td>{{price}}</td>
+                <td>{{productContent}}</td>
+                <td><a href="/elecmall/order/purchase/{{productId}}" class="btn btn-primary">구매</a></td>
+            </tr>
+        {{/products}}
+        </tbody>
+    </table>
+</div>
 {{>layouts/footer}}

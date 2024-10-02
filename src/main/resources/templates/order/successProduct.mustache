@@ -1,10 +1,8 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>구매 완료</title>
-</head>
-<body>
-    구매 완료 페이지입니다
-</body>
-</html>
+{{>layouts/header}}
+<div class="container my-4">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+    <h1 class="text-center mb-4"><b>구매 완료</b></h1>
+    <p>상품 구매가 완료되었습니다.</p>
+    <a href="/elecmall/order/all" class="btn btn-primary">상품 목록으로 돌아가기</a>
+</div>
+{{>layouts/footer}}

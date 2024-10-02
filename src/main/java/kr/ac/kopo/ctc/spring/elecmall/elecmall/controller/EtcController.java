@@ -1,12 +1,10 @@
 package kr.ac.kopo.ctc.spring.elecmall.elecmall.controller;
 
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.BoardItem;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.Reservation;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.Shop;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.User;
+import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.*;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.repository.ShopRepository;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.repository.UserRepository;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.service.BoardItemService;
+import kr.ac.kopo.ctc.spring.elecmall.elecmall.service.ProductService;
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,9 @@ public class EtcController {
     ShopRepository shopRepository;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private BoardItemService boardItemService;
 
     @Autowired
@@ -51,6 +52,11 @@ public class EtcController {
         
         Optional<Shop> shop = shopRepository.findById(user.getUserId());
         model.addAttribute("shop", shop);
+
+        // 주문 현황 가져오기
+        List<OrderInfo> myOrders = productService.getMyProduct(user.getUserId());
+        log.info("주문 현황 : " + myOrders.toString());
+        model.addAttribute("myOrders", myOrders);
         
         // 게시판 현황 가져오기
         List<BoardItem> myBoardItems = boardItemService.getMyBoardItem(user.getUserId());

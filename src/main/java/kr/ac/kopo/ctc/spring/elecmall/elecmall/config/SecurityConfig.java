@@ -36,6 +36,7 @@ public class SecurityConfig {
         http // 인가
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll()
+                        .requestMatchers("/elecmall/**").permitAll() // CSS 파일 접근 허용
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/myPage/**").hasAnyRole("USER")
                         .requestMatchers("/reservation/**").hasAnyRole("USER")

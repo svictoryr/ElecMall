@@ -53,5 +53,28 @@
             </tbody>
         </table>
     </div>
+    <h3>상품 주문 현황</h3>
+    <div>
+        <table class="table table-hober table-bordered">
+            <thead>
+            <tr>
+                <th>주문일자</th>
+                <th>배송상태</th>
+                <th>수량</th>
+                <th>총 금액</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#myOrders}}
+                <tr>
+                    <td>{{orderDate}}</td>
+                    <td>{{orderType}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{totalPrice}}</td>
+                </tr>
+            {{/myOrders}}
+            </tbody>
+        </table>
+    </div>
 </div>
 {{>layouts/footer}}
