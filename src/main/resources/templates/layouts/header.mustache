@@ -27,19 +27,25 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/elecmall/board/list" tabindex="-1" aria-disabled="false">일렉몰 게시판</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="/elecmall/event" tabindex="-1" aria-disabled="false">이벤트</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/elecmall/myPage" tabindex="-1" aria-disabled="false">마이페이지</a>
                 </li>
             </ul>
         </div>
+
+        <!-- 로그인 상태에 따른 버튼 표시 -->
+        {{#isLoggedIn}}
+            <form action="/elecmall/logout" method="get" onsubmit="return confirmLogout()">
+                <button type="submit" class="btn btn-danger" style="padding: 0.5rem 2rem; white-space: nowrap;">로그아웃</button>
+            </form>
+        {{/isLoggedIn}}
+        {{^isLoggedIn}}
+            <a href="/elecmall/login" class="btn btn-primary" style="padding: 0.5rem 2rem; white-space: nowrap;">로그인</a>
+        {{/isLoggedIn}}
     </div>
-    <form action="/elecmall/logout" method="get" onsubmit="return confirmLogout()">
-        <button type="submit" class="btn btn-danger" style="padding: 0.5rem 2rem; white-space: nowrap;">로그아웃</button>
-    </form>
 </nav>
+
+
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 

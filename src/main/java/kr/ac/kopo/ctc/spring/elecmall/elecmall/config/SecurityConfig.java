@@ -35,17 +35,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http // 인가
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll()
+                        .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc", "/elecmall/**").permitAll()
                         .requestMatchers("/elecmall/**").permitAll() // CSS 파일 접근 허용
+                        .requestMatchers("/style.css").permitAll() // CSS 파일 접근 허용
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/myPage/**").hasAnyRole("USER")
                         .requestMatchers("/reservation/**").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 );
 
-        http // 로그인 홈페이지에 대한 자동 작업 (controller에 만들 필요 없음)
-                .formLogin((auth) -> auth.loginPage("/login")
+        http // 로그인 홈페이지에 대한 자동 작업
+                .formLogin((auth) -> auth
+                        .loginPage("/login")
                         .loginProcessingUrl("/loginProc")
+                        .defaultSuccessUrl("/", true) // 로그인 성공 후 리다이렉트 URL 설정
                         .permitAll()
                 );
 

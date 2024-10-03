@@ -46,7 +46,9 @@ public class LoginController {
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
 
-        model.addAttribute("id", id);
+        if (!id.equals("anonymousUser")) {
+            model.addAttribute("id", id);
+        }
         model.addAttribute("role", role);
 
         return "main";

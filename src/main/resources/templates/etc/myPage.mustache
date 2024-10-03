@@ -1,80 +1,153 @@
 {{>layouts/header}}
-<h1><b>환영합니다 {{user.realname}}님</b></h1>
-
 <div class="container my-4">
     <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-    <h3>게시판 이용 현황</h3>
-    <div class="d-flex justify-content-between align-items-center">
-        <table class="table table-hober table-bordered">
-            <thead>
-            <tr>
-                <th>글 번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#myBoardItems}}
-                <tr>
-                    <td>{{boardId}}</td>
-                    <td><a href = /elecmall/board/{{boardId}} class="text-decoration-none"">{{boardTitle}}</td>
-                    <td>{{boardAuthor}}</td>
-                    <td>{{writeDate}}</td>
-                    <td>{{count}}</td>
-                </tr>
-            {{/myBoardItems}}
-            </tbody>
-        </table>
+    <h1 class="text-center mb-4"><b>환영합니다 {{user.realname}}님</b></h1>
+
+    <!-- 토글 버튼 -->
+    <div class="text-center mb-4">
+        <button class="btn btn-primary toggle-button" data-target="order-status">상품 주문 현황</button>
+        <button class="btn btn-primary toggle-button" data-target="reservation-status">매장 방문 예약 현황</button>
+        <button class="btn btn-primary toggle-button" data-target="board-status">게시판 이용 현황</button>
     </div>
-    <h3>매장 방문 예약 현황</h3>
-    <div>
-        <table class="table table-hober table-bordered">
-            <thead>
-            <tr>
-                <th>예약일</th>
-                <th>예약시간</th>
-                <th>매장명</th>
-                <th>매장 위치</th>
-                <th>세부사항</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#myReservations}}
+
+    <!-- 상품 주문 현황 섹션 (기본적으로 숨김) -->
+    <div class="order-status mb-4" style="display: none;">
+        <h3><b>상품 주문 현황</b></h3>
+        <div>
+            <table class="table table-hover table-bordered">
+                <thead>
                 <tr>
-                    <td>{{reserveDay}}</td>
-                    <td>{{reserveTime}}</td>
-                    <td>{{shop.shopName}}</td>
-                    <td>{{shop.shopAddress}}</td>
-                    <td>{{reserveContent}}</td>
+                    <th>주문일자</th>
+                    <th>배송상태</th>
+                    <th>수량</th>
+                    <th>총 금액</th>
                 </tr>
-            {{/myReservations}}
-            </tbody>
-        </table>
-    </div>
-    <h3>상품 주문 현황</h3>
-    <div>
-        <table class="table table-hober table-bordered">
-            <thead>
-            <tr>
-                <th>주문일자</th>
-                <th>배송상태</th>
-                <th>수량</th>
-                <th>총 금액</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#myOrders}}
-                <tr>
-                    <td>{{orderDate}}</td>
-                    <td>{{orderType}}</td>
-                    <td>{{quantity}}</td>
-                    <td>{{totalPrice}}</td>
-                </tr>
+                </thead>
+                <tbody>
+                {{#myOrders}}
+                    <tr>
+                        <td>{{orderDate}}</td>
+                        <td>{{orderType}}</td>
+                        <td>{{quantity}}</td>
+                        <td class="total-price">{{totalPrice}}</td>
+                    </tr>
+                {{/myOrders}}
+                </tbody>
+            </table>
+            {{^myOrders}}
+                <p>해당 사항이 없습니다.</p>
             {{/myOrders}}
-            </tbody>
-        </table>
+        </div>
+    </div>
+
+    <!-- 매장 방문 예약 현황 섹션 -->
+    <div class="reservation-status mb-4" style="display: none;">
+        <h3><b>매장 방문 예약 현황</b></h3>
+        <div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>예약일</th>
+                    <th>예약시간</th>
+                    <th>매장명</th>
+                    <th>매장 위치</th>
+                    <th>세부사항</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#myReservations}}
+                    <tr>
+                        <td>{{reserveDay}}</td>
+                        <td>{{reserveTime}}</td>
+                        <td>{{shop.shopName}}</td>
+                        <td>{{shop.shopAddress}}</td>
+                        <td>{{reserveContent}}</td>
+                    </tr>
+                {{/myReservations}}
+                </tbody>
+            </table>
+            {{^myReservations}}
+                <p>해당 사항이 없습니다.</p>
+            {{/myReservations}}
+        </div>
+    </div>
+
+    <!-- 게시판 이용 현황 섹션 -->
+    <div class="board-status mb-4" style="display: none;">
+        <h3><b>게시판 이용 현황</b></h3>
+        <div>
+            {{#myBoardItems}}
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>글 번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#myBoardItems}}
+                        <tr>
+                            <td>{{boardId}}</td>
+                            <td><a href="/elecmall/board/{{boardId}}" class="text-decoration-none">{{boardTitle}}</a></td>
+                            <td>{{boardAuthor}}</td>
+                            <td>{{writeDate}}</td>
+                            <td>{{count}}</td>
+                        </tr>
+                    {{/myBoardItems}}
+                    </tbody>
+                </table>
+            {{/myBoardItems}}
+            {{^myBoardItems}}
+                <p>해당 사항이 없습니다.</p>
+            {{/myBoardItems}}
+        </div>
     </div>
 </div>
+
+<!-- JavaScript 코드 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        const sections = document.querySelectorAll('.board-status, .reservation-status, .order-status');
+
+        // 가격을 화폐 단위로 포맷팅하는 함수
+        const formatPrice = (amount) => {
+            return amount.toLocaleString() + ' 원';
+        };
+
+        // 모든 섹션 숨기기
+        sections.forEach(section => section.style.display = 'none');
+
+        // 상품 주문 현황에서 총 금액 포맷팅
+        const totalPriceElements = document.querySelectorAll('.total-price');
+        totalPriceElements.forEach(element => {
+            const priceValue = parseFloat(element.textContent);
+            element.textContent = formatPrice(priceValue);
+        });
+
+        // 토글 버튼 클릭 이벤트 리스너
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+
+                // 모든 섹션 숨기기
+                sections.forEach(section => section.style.display = 'none');
+
+                // 클릭한 버튼과 관련된 섹션만 보이기
+                document.querySelector(`.${target}`).style.display = 'block';
+
+                // 버튼의 active 클래스 토글
+                toggleButtons.forEach(btn => btn.classList.remove('active')); // 모든 버튼에서 active 클래스 제거
+                this.classList.add('active'); // 클릭된 버튼에 active 클래스 추가
+            });
+        });
+
+        // 기본적으로 모든 섹션 숨기고, 모든 버튼에서 active 클래스 제거
+        toggleButtons.forEach(btn => btn.classList.remove('active')); // 모든 버튼에서 active 클래스 제거
+    });
+</script>
+
 {{>layouts/footer}}

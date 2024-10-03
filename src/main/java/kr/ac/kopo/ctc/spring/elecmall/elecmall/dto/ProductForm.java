@@ -1,8 +1,6 @@
 package kr.ac.kopo.ctc.spring.elecmall.elecmall.dto;
 
 import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.Product;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.Reservation;
-import kr.ac.kopo.ctc.spring.elecmall.elecmall.entity.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +15,7 @@ public class ProductForm {
     private String productType;
     private int price;
     private int stock;
+    private String imageUrl;
 
     public Product toEntity() {
         Product product = new Product();
@@ -26,7 +25,9 @@ public class ProductForm {
         product.setProductType(this.productType);
         product.setPrice(this.price);
         product.setStock(this.stock);
+        product.setImageUrl(this.imageUrl);
 
         return product;
     }
+
 }

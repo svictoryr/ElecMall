@@ -2,27 +2,95 @@
 <div class="container my-4">
     <input type="hidden" name="_csrf" value="{{_csrf.token}}">
     <h1 class="text-center mb-4"><b>전체 상품 목록</b></h1>
-    <table class="table table-hover table-bordered">
-        <thead>
-        <tr>
-            <th>상품 번호</th>
-            <th>상품명</th>
-            <th>가격</th>
-            <th>세부사항</th>
-            <th>구매</th>
-        </tr>
-        </thead>
-        <tbody>
+
+    <!-- 토글 버튼 -->
+    <div class="text-center mb-4">
+        <button class="btn btn-primary toggle-button active" data-type="all">모든 상품</button>
+        <button class="btn btn-primary toggle-button" data-type="TV/영상가전">TV/영상가전</button>
+        <button class="btn btn-primary toggle-button" data-type="냉장고">냉장고</button>
+        <button class="btn btn-primary toggle-button" data-type="세탁기">세탁기</button>
+        <button class="btn btn-primary toggle-button" data-type="의류관리기">의류관리기</button>
+        <button class="btn btn-primary toggle-button" data-type="건조기">건조기</button>
+    </div>
+
+    <div class="row">
         {{#products}}
-            <tr>
-                <td>{{productId}}</td>
-                <td>{{productName}}</td>
-                <td>{{price}}</td>
-                <td>{{productContent}}</td>
-                <td><a href="/elecmall/order/purchase/{{productId}}" class="btn btn-primary">구매</a></td>
-            </tr>
+            <div class="col-md-4 mb-4 prdItem" goodsno="{{productId}}" id="cat{{productId}}" data-type="{{productType}}"> <!-- 상품 타입 추가 -->
+                <a href="/elecmall/order/purchase/{{productId}}" class="prdLink">
+                    <div class="prdImg">
+                        <img src="{{imageUrl}}" alt="{{productName}}" width="220" height="220">
+                    </div>
+                    <div class="prdInfo text-center">
+                        <p class="prdName">{{productName}}</p>
+                    </div>
+                </a>
+                <div class="text-center price">
+                    {{#isSoldOut}} <!-- isSoldOut이 true일 때 -->
+                        <span style="color: red;">품절</span> <!-- 품절 상태인 경우 빨간색으로 표시 -->
+                    {{/isSoldOut}}
+                    {{^isSoldOut}} <!-- isSoldOut이 false일 때 -->
+                        <div class="text-center price">{{price}} 원</div>
+                    {{/isSoldOut}}
+                </div>
+            </div>
         {{/products}}
-        </tbody>
-    </table>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        const productItems = document.querySelectorAll('.prdItem');
+
+        // 모든 상품 표시 (기본 값)
+        productItems.forEach(item => item.style.display = 'block');
+
+        // 가격을 화폐 단위로 포맷팅
+        productItems.forEach(item => {
+            const priceElement = item.querySelector('.price');
+            const priceText = priceElement.textContent; // 가격 텍스트 가져오기
+            // 가격이 "품절"이 아닌 경우만 포맷팅
+            if (!priceText.includes('품절')) {
+                const price = parseInt(priceText.replace(/,/g, '').replace(' 원', '')); // 가격을 정수로 변환
+                priceElement.textContent = `${price.toLocaleString()} 원`; // 화폐 단위로 변환하여 출력
+            }
+        });
+
+        // 토글 버튼 클릭 이벤트 리스너
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+
+                // 모든 상품 숨기기
+                productItems.forEach(item => {
+                    if (type === 'all') {
+                        item.style.display = 'block'; // 모든 상품 보이기
+                    } else {
+                        // 클릭한 유형과 일치하는 상품만 보이기
+                        item.style.display = item.getAttribute('data-type') === type ? 'block' : 'none';
+                    }
+                });
+
+                // 선택된 버튼 스타일 변경
+                toggleButtons.forEach(btn => {
+                    btn.classList.remove('active'); // 모든 버튼에서 active 클래스 제거
+                });
+                this.classList.add('active'); // 현재 클릭한 버튼에 active 클래스 추가
+            });
+        });
+    });
+</script>
+
+<style>
+    .toggle-button.active {
+        background-color: #FFC107; /* 선택된 버튼 색상 */
+        color: black; /* 선택된 버튼 글자 색상 */
+    }
+
+    .toggle-button:not(.active) {
+        background-color: #6c757d; /* 비선택 버튼 색상 (회색) */
+        color: #fff; /* 비선택 버튼 글자 색상 */
+    }
+</style>
+
 {{>layouts/footer}}

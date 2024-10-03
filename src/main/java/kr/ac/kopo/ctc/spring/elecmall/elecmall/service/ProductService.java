@@ -12,11 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -34,7 +37,16 @@ public class ProductService {
     }
 
     // 모든 제품 조회
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(String type) {
+        List<Product> products;
+
+        if ("all".equals(type) || type == null) {
+            products = productRepository.findAll();
+        } else {
+            products = productRepository.findByProductType(type);
+        }
+
+
         return productRepository.findAll(); // 모든 제품 반환
     }
 

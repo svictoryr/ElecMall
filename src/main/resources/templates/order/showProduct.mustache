@@ -1,45 +1,69 @@
 {{>layouts/header}}
-<h1>상품 구매</h1>
-<div>
-    <h2>{{product.productName}}</h2>
-    <p>가격: {{product.price}} 원</p>
-    <p>상세 설명: {{product.productContent}}</p>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body d-flex">
+            <div class="me-4">
+                <img src="{{product.imageUrl}}" alt="{{product.productName}}" class="img-fluid mb-3" style="max-width: 500px; height: auto; display: block; margin: 0 auto;">
+            </div>
+            <div>
+                <h2 class="card-title">{{product.productName}}</h2>
+                <p class="card-text">가격: <strong id="productPrice">{{product.price}} 원</strong></p>
+                <p class="card-text">상세 설명: {{product.productContent}}</p>
 
-    <!-- 주문 폼 -->
-    <form action="/elecmall/order/purchase" method="post">
-        <input type="hidden" name="productId" value="{{product.productId}}">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                <form action="/elecmall/order/purchase" method="post" class="mt-4">
+                    <input type="hidden" name="productId" value="{{product.productId}}">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                    <div class="text-center price">
+                        {{#isSoldOut}} <!-- isSoldOut이 true일 때 -->
+                            <span class="sold-out">품절</span>
+                        {{/isSoldOut}}
+                        {{^isSoldOut}} <!-- isSoldOut이 false일 때 -->
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">수량:</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control form-control-sm" min="1" max="{{product.stock}}" value="1" required style="width: 80px; display: inline-block;">
+                            </div>
 
-        <div>
-            <label for="quantity">수량:</label>
-            <input type="number" id="quantity" name="quantity" min="1" max="{{product.stock}}" value="1" required>
+                            <p class="fw-bold">총 금액: <span id="totalPrice">{{product.price}} 원</span></p>
+                            <input type="hidden" name="totalPrice" id="hiddenTotalPrice" value="{{product.price}}">
+
+                            <button type="submit" class="btn btn-primary">구매하기</button>
+                        {{/isSoldOut}}
+                    </div>
+                </form>
+            </div>
         </div>
+    </div>
 
-        <!-- 총 금액 표시 -->
-        <p>총 금액: <span id="totalPrice"> {{product.price}} </span> 원</p>
-
-        <!-- 총 금액을 서버로 전송하기 위한 숨겨진 필드 -->
-        <input type="hidden" name="totalPrice" id="hiddenTotalPrice" value="{{product.price}}">
-
-        <button type="submit">구매하기</button>
-    </form>
+    <div class="text-center mt-4">
+        <a href="/elecmall/order/all" class="btn btn-secondary">모든 상품 보기</a>
+    </div>
 </div>
-
-<a href="/elecmall/order/all">모든 상품 보기</a>
 
 <script>
     const price = {{product.price}};
     const quantityInput = document.getElementById('quantity');
     const totalPriceElement = document.getElementById('totalPrice');
     const hiddenTotalPrice = document.getElementById('hiddenTotalPrice');
+    const productPriceElement = document.getElementById('productPrice'); // 가격 요소 추가
 
-    // 수량 입력에 따라 총 금액을 계산하고 반영
-    quantityInput.addEventListener('input', () => {
-        const quantity = quantityInput.value;
-        const totalPrice = price * quantity;
-        totalPriceElement.textContent = totalPrice; // 총 금액을 표시하는 부분
-        hiddenTotalPrice.value = totalPrice; // 숨겨진 필드에 총 금액 설정
-    });
+    // 가격을 화폐 단위로 포맷팅
+    const formatPrice = (amount) => {
+        return amount.toLocaleString() + ' 원';
+    };
+
+    // 초기 가격 및 총 금액 포맷팅
+    productPriceElement.textContent = formatPrice(price); // 가격 포맷팅
+    totalPriceElement.textContent = formatPrice(price); // 초기 총 금액 포맷팅
+    hiddenTotalPrice.value = price;
+
+    // 수량 입력 시 총 금액 업데이트
+    if (quantityInput) {
+        quantityInput.addEventListener('input', () => {
+            const quantity = quantityInput.value;
+            const totalPrice = price * quantity;
+            totalPriceElement.textContent = formatPrice(totalPrice);
+            hiddenTotalPrice.value = totalPrice;
+        });
+    }
 </script>
-
 {{>layouts/footer}}

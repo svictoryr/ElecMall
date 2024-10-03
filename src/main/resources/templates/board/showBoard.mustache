@@ -5,63 +5,76 @@
     </div>
 {{/errorMessage}}
 <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
 <div class="container mt-5">
     <div class="post-detail bg-white border rounded p-4 shadow-sm">
-        <h2 class = "post-title">{{boardItem.boardTitle}}</h2>
-
-        <div class="post-meta mb=4">
-            <div class="meta-item">
-                <h5>작성자</h5>
-                <p>{{boardItem.boardAuthor}}</p>
+        <!-- 게시글 제목 -->
+        <h2 class="post-title mb-4"><b>{{boardItem.boardTitle}}</b></h2>
+        <div class="post-meta mb-4 d-flex justify-content-between align-items-center border rounded p-3 bg-light">
+            <!-- 작성자 정보 -->
+            <div class="meta-item text-center" style="flex-basis: 30%;">
+        <span class="nickname" title="{{boardItem.boardAuthor}}">
+            <b>작성자</b> {{boardItem.boardAuthor}}
+        </span>
             </div>
-            <div class="meta-item">
-                <h5>작성일자</h5>
-                <p>{{boardItem.writeDate}}</p>
+            <!-- 작성일자 정보 -->
+            <div class="meta-item text-center" style="flex-basis: 30%;">
+        <span class="gall_date" title="{{boardItem.writeDate}}">
+            <b>작성일자</b> {{boardItem.writeDate}}
+        </span>
             </div>
-            <div class="meta-item">
-                <h5>조회수</h5>
-                <p>{{boardItem.count}}</p>
+            <!-- 조회수 정보 -->
+            <div class="meta-item text-center" style="flex-basis: 30%;">
+                <span class="gall_count"><b>조회수</b> {{boardItem.count}}</span>
             </div>
         </div>
+        <!-- 게시글 내용 (고정 크기 및 스크롤) -->
         <div class="post-content mb-4">
-            <h5>내용</h5>
-            <div class="p-3 bg-white border rounded">
+            <div class="p-3 bg-light border rounded" style="height: 300px; overflow-y: auto;">
                 <p class="mb-0">{{boardItem.boardContent}}</p>
             </div>
         </div>
-        <div class="post-actions">
-            <a href="/elecmall/board/list" class="btn btn-secondary">목록으로</a>
+
+        <!-- 수정 및 삭제 버튼 -->
+        <div class="post-actions mb-4">
             {{#canEditOrDeleteB}}
-                <a href="/elecmall/board/{{boardItem.boardId}}/edit" class="btn btn-warning">수정</a>
+                <a href="/elecmall/board/{{boardItem.boardId}}/edit" class="btn btn-warning me-2">수정</a>
                 <a href="/elecmall/board/{{boardItem.boardId}}/delete" class="btn btn-danger">삭제</a>
             {{/canEditOrDeleteB}}
         </div>
-        <div class="post-content mb-4">
+
+        <!-- 댓글 섹션 -->
+        <div class="post-comments mb-4">
             <h5>댓글</h5>
             <div class="comments">
-                {{#comments}} <!-- 댓글 리스트를 반복 -->
-                    <div class="comment-item border rounded p-2 mb-2">
-                        <p><strong>{{commentAuthor}}</strong> - {{commentWriteDate}}</p>
+                {{#comments}}
+                    <!-- 댓글 아이템 -->
+                    <div class="comment-item border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p><strong>{{commentAuthor}}</strong> - {{commentWriteDate}}</p>
+                            {{#canEditOrDeleteC}}
+                                <a href="/elecmall/board/{{boardItem.boardId}}/comment/delete/{{this.commentId}}" class="btn btn-danger btn-sm">삭제</a>
+                            {{/canEditOrDeleteC}}
+                        </div>
                         <p>{{commentComment}}</p>
-                        {{#canEditOrDeleteC}} <!-- 각 댓글에 대해 권한 체크 -->
-                            <a href="/elecmall/board/{{boardItem.boardId}}/comment/delete/{{this.commentId}}" class="btn btn-danger">X</a>
-                        {{/canEditOrDeleteC}}
                     </div>
                 {{/comments}}
-                {{^comments}} <!-- 댓글이 없을 때 메시지 -->
+                {{^comments}}
                     <p>댓글이 없습니다.</p>
                 {{/comments}}
             </div>
         </div>
+
         <form action="/elecmall/board/{{boardItem.boardId}}/comment" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-            <div class="form-group">
-                <label for="commentComment">댓글</label>
+            <div class="form-group mb-3">
+                <label for="commentComment">댓글 작성</label>
                 <textarea id="commentComment" name="commentComment" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary ">댓글 달기</button>
+            <button type="submit" class="btn btn-primary">댓글 달기</button>
+            <a href="/elecmall/board/list" class="btn btn-secondary">목록으로</a>
         </form>
     </div>
-    </div>
 </div>
+
 {{>layouts/footer}}
