@@ -17,6 +17,7 @@
             <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
+                    <th>상품명</th>
                     <th>주문일자</th>
                     <th>배송상태</th>
                     <th>수량</th>
@@ -26,6 +27,7 @@
                 <tbody>
                 {{#myOrders}}
                     <tr>
+                        <td>{{product.productName}}</td>
                         <td>{{orderDate}}</td>
                         <td>{{orderType}}</td>
                         <td>{{quantity}}</td>

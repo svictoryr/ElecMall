@@ -1,8 +1,8 @@
 {{>layouts/header}}
-<div class="container my-4">
+<div class="container my-4 text-center">
     <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-    <h1 class="text-center mb-4"><b>예약 완료</b></h1>
-    <p>매장 방문 예약이 완료되었습니다.</p>
-    <a href="/elecmall/myPage" class="btn btn-primary">예약 내역 확인하기</a>
+    <h1 class="mb-4" style="font-size: 2rem; color: #333;"><b>예약 완료</b></h1>
+    <p style="font-size: 1.2rem; color: #555;">매장 방문 예약이 완료되었습니다</p>
+    <a href="/elecmall/order/all" class="btn btn-primary" style="padding: 10px 20px; font-size: 1rem;">예약 내역 확인하기</a>
 </div>
 {{>layouts/footer}}
